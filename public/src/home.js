@@ -6,13 +6,13 @@ function getTotalBooksCount(books) {
   return accounts.length;
  }
 
- function getBooksBorrowedCount(books) {
-  let booksBorrowed = books.filter(
-   (book) =>
-    book.borrows.filter((record) => record.returned === false).length > 0
-  );
-  return booksBorrowed.length;
- }
+function getBooksBorrowedCount(books) {
+  return books.reduce((borrowCount, { borrows }) => {
+    const mostRecent = borrows[0];
+    if (!mostRecent.returned) borrowCount++;
+    return borrowCount;
+  }, 0);
+}
 
  function getMostCommonGenres(books) {
   let map = {};
